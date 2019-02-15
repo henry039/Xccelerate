@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JQuery selector</title>
+</head>
+
+<body>
+    <header id='header'>
+        <h1>Contacts</h1>
+    </header>
+    <div id="content">
+        <section class="sections" id="new-contact">
+            <h1>Create New Contact</h1>
+            <form id="form1">
+                <div id="row-name">
+                    <input type='text' name="name" placeholder="Name" />
+                </div>
+                <div id="row-phone">
+                    <input type='text' name="phone" placeholder="Telephone Number" />
+                </div>
+                <div id="row-email">
+                    <input type='text' name="email" placeholder="Email" />
+                </div>
+                <div id="row-submit">
+                    <input type="submit" value="submit" />
+                </div>
+            </form>
+        </section>
+        <section class="sections" id="contact-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Telephone Number</th>
+                        <th>email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row">
+                        <td>Sam</td>
+                        <td>123456789</td>
+                        <td>sam@gmail.com</td>
+                    </tr>
+                    <tr class="row">
+                        <td>Tom</td>
+                        <td>987654321</td>
+                        <td>tom@gmail.com</td>
+                    </tr>
+                    <tr class="row">
+                        <td>Nadim</td>
+                        <td>54678292</td>
+                        <td>nadim@gmail.com</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script type="text/javascript">
+    // B-C EXercise
+    $('tbody').append(`
+    <tr class="row">
+        <td>Peter</td>
+        <td>123456789</td>
+        <td>peter@gmail.com</td>
+    </tr>`)
+
+    $('#row-submit').append(`
+        <input type="reset" value="clear" />
+    `)
+
+    $('#header h1').text('Henry\'s contact list appliction')
+
+    $('#contact-list').css('color', 'pink')
+    
+    // D Exercise Below
+    $('input[name="phone"]').keyup((e) =>{
+        let thiss = e.target;
+        let len = String(thiss.value).length
+        if (len < 5 || len > 16) {
+            $(thiss).css('border-color', 'red')
+        }else{
+            $(thiss).css('border-color', 'black')
+        }
+    })
+    
+    let name = $('input[name="name"]')
+    name.keyup(() =>{
+        if (name.val().length > 49) {
+            name.css('border-color', 'red')
+        }else{
+            name.css('border-color', 'black')
+        }
+    })
+    
+    $('#new-contact').submit((e) =>{
+        e.preventDefault();
+        let thiss = e.target;
+        $('tbody').append(`
+            <tr class="row">
+                <td>${thiss.name.value}</td>
+                <td>${thiss.phone.value}</td>
+                <td>${thiss.email.value}</td>
+            </tr>
+        `);
+        $('input[value="clear"]').click();
+    })
+    $('#content').append(`
+        <section id="updateForm">
+            <h1>Update List</h1>
+            <form id="form2">
+                <div id="row-name2">
+                    <input type='text' name="name2" placeholder="Name" />
+                </div>
+                <div id="row-phone2">
+                    <input type='text' name="phone2" placeholder="Telephone Number" />
+                </div>
+                <div id="row-email2">
+                    <input type='text' name="email2" placeholder="Email" />
+                </div>
+                <div id="row-submit2">
+                    <input type="submit" value="submit" />
+                </div>
+            </form>
+        </section>
+    `)
+
+    let phone2 = $('input[name="phone2"]')
+    phone2.keyup(() =>{
+        if (phone2.val().length < 5 || phone2.val().length > 16) {
+            phone2.css('border-color', 'brown')
+        }else{
+            phone2.css('border-color', 'black')
+        }
+    })
+    
+    let name2 = $('input[name="name2"]')
+    name2.keyup(() =>{
+        if (name2.val().length > 49) {
+            name2.css('border-color', 'brown')
+        }else{
+            name2.css('border-color', 'black')
+        }
+    })
+    let current;
+    $('tbody').click((e)=>{
+        let rowClick = current = e.target.parentElement.children;
+        phone2.val(rowClick[1].textContent)
+        name2.val(rowClick[0].textContent) 
+        $('input[name="email2"]').val(rowClick[2].textContent) 
+    })
+    $('#updateForm').submit((e)=>{
+        e.preventDefault();
+        let thiss = e.target;
+        $(current[0]).text(name2.val())
+        $(current[1]).text(phone2.val())
+        $(current[2]).text($('input[name="email2"]').val())
+        
+        alert(`
+        Name : ${name2.val()}
+        Phone : ${phone2.val()}
+        Email : ${$('input[name="email2"]').val()}
+        `)
+    })
+</script>
+
+</html>
